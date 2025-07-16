@@ -223,3 +223,74 @@ UPDATE employee
 SET position_title = 'Customer Specialist'
 WHERE position_title = 'Customer Support'
 ```
+Task 4.3
+
+All SQL Analysts including Senior SQL Analysts get a raise of 6%.
+
+Upate the salaries accordingly.
+
+### My solution
+```sql
+UPDATE employee
+SET salary = (salary + (6*100)/salary)
+WHERE position_title = 'SQL Analyst'
+```
+
+Task 4.4
+
+Question:
+
+What is the average salary of a SQL Analyst in the company (excluding Senior SQL Analyst)?
+
+Answer:
+
+8834.75
+
+### My solution
+```sql
+SELECT 
+ROUND(AVG(salary),2)
+FROM employee
+WHERE position_title = 'SQL Analyst'
+```
+
+
+## Task 5
+
+Difficulty: Advanced
+
+
+### Task 5.1
+
+Write a query that adds a column called manager that contains  first_name and last_name (in one column) in the data output.
+
+```sql
+ALTER TABLE employee
+ADD manager text;
+
+UPDATE employee
+SET manager = first_name || ' ' || last_name
+WHERE first_name = first_name AND last_name = last_name;
+
+
+```
+
+Secondly, add a column called is_active with 'false' if the employee has left the company already, otherwise the value is 'true'.
+
+```sql
+ALTER TABLE employee
+ADD is_active BOOL;
+
+Update employee
+SET is_active = TRUE
+WHERE end_date IS NULL;
+
+Update employee
+SET is_active = FALSE
+WHERE end_date IS NOT NULL;
+```
+
+### Task 5.2
+
+Create a view called v_employees_info from that previous query.
+
