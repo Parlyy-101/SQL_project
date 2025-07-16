@@ -142,7 +142,7 @@ Values:
 (25,'Jack','Franklin','SQL Analyst',6771.00,'2013-05-18','2005-10-04',1,2,2,NULL),
 (26,'Jessica','Brown','SQL Analyst',8566.00,'2003-10-23','1965-01-29',1,1,2,NULL)
 
-
+### My solution
 ```sql
 INSERT INTO employee (emp_id,first_name,last_name,position_title,
 salary,start_date, birth_date, store_id,department_id,manager_id,end_date)
@@ -181,7 +181,7 @@ Insert the following values into the departments table.
 
 <img width="485" height="288" alt="image" src="https://github.com/user-attachments/assets/1b66a6ff-423f-40f0-adde-d056a8442d5c" />
 
-
+### My solution
 ```sql
 INSERT INTO departments (department, division)
 VALUES ('Analytics', 'IT'),
@@ -218,6 +218,8 @@ WHERE first_name = 'Jack' AND last_name = 'Franklin'
 The responsible people decided to rename the position_title Customer Support to Customer Specialist.
 
 Update the values accordingly.
+
+### My solution
 ```sql
 UPDATE employee
 SET position_title = 'Customer Specialist'
@@ -264,6 +266,7 @@ Difficulty: Advanced
 
 Write a query that adds a column called manager that contains  first_name and last_name (in one column) in the data output.
 
+### My solution
 ```sql
 ALTER TABLE employee
 ADD manager text;
@@ -277,6 +280,7 @@ WHERE first_name = first_name AND last_name = last_name;
 
 Secondly, add a column called is_active with 'false' if the employee has left the company already, otherwise the value is 'true'.
 
+### My solution
 ```sql
 ALTER TABLE employee
 ADD is_active BOOL;
