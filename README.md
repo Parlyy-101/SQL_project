@@ -362,13 +362,13 @@ WHERE d.department = 'Sales'
 GROUP BY d.department, d.division;
 ```
 
-Task 8
+## Task 8
 
 Difficulty: Advanced
 
 
 
-Task 8.1
+### Task 8.1
 
 Write a query that returns the following:
 
@@ -396,10 +396,10 @@ first_name,
 last_name,
 position_title,
 salary,
-(SELECT 
+(SELECT
       ROUND(AVG(salary),2) avg_position_salary
       FROM employee s
-      WHERE s.salary = f.salary
+      WHERE s.position_title = f.position_title
       GROUP BY position_title)
 FROM employee f
 ORDER BY emp_id;
@@ -408,7 +408,7 @@ ORDER BY emp_id;
 
 
 
-Task 8.2
+### Task 8.2
 
 Difficulty: Advanced to Pro
 
@@ -426,4 +426,89 @@ Answer:
 
 9
 
+```sql
+SELECT COUNT(*)
+FROM
+(SELECT emp_id,
+first_name,
+last_name,
+position_title,
+salary,
+(SELECT
+      ROUND(AVG(salary),2) avg_position_salary
+      FROM employee s
+      WHERE s.position_title = f.position_title
+      GROUP BY position_title)
+FROM employee f
+ORDER BY emp_id)
+WHERE salary < avg_position_salary;
+```
 
+## Task 9:
+
+Difficulty: Advanced
+
+Write a query that returns a running total of the salary development by the start_date.
+
+In your calculation, you can assume their salary has not changed over time, and you can disregard the fact that people have left the company (write the query as if they were still working for the company).
+
+### My solution
+```sql
+SELECT emp_id,
+salary,
+start_date,
+SUM(salary) OVER(ORDER BY start_date)
+FROM employee
+```
+
+Question:
+
+What was the total salary after 2018-12-31?
+
+Answer:
+
+180202.70
+### My solution
+```sql
+SELECT lead
+FROM (
+SELECT *,
+LEAD(total) OVER(ORDER BY start_date) lead
+FROM
+(SELECT emp_id,
+salary,
+start_date,
+SUM(salary) OVER(ORDER BY start_date) total
+FROM employee))
+WHERE start_date = '2018-12-31'
+```
+
+## Task 10:
+
+Difficulty: Pro / Very difficult
+
+Create the same running total but now also consider the fact that people were leaving the company.
+
+
+
+Note:
+
+This challenge is actually very difficult.
+
+Don't worry if you can't solve it you are not expected to do so.
+
+It is possible to solve the challenge even without the hints.
+
+If you want you can try to solve it using the hints and it is still a difficult challenge.
+
+
+
+Question:
+
+What was the total salary after 2018-12-31?
+
+
+
+Answer:
+
+166802.84
