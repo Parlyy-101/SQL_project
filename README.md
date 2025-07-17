@@ -512,3 +512,20 @@ What was the total salary after 2018-12-31?
 Answer:
 
 166802.84
+
+### My solution
+```sql
+SELECT lead
+FROM (
+SELECT *,
+LEAD(total) OVER(ORDER BY start_date) lead
+FROM
+(SELECT emp_id,
+salary,
+start_date,
+SUM(salary) OVER(ORDER BY start_date) total
+FROM v_employees_info
+WHERE is_active = 'true'))
+WHERE start_date = '2018-12-31'
+```
+
