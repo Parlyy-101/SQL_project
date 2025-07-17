@@ -529,3 +529,55 @@ WHERE is_active = 'true'))
 WHERE start_date = '2018-12-31'
 ```
 
+### Task 11.1
+
+Write a query that outputs only the top earner per position_title including first_name and position_title and their salary.
+
+
+```sql
+SELECT first_name, position_title,
+MAX(salary)
+FROM employee
+GROUP BY first_name, position_title;
+```
+
+
+Question:
+
+What is the top earner with the position_title SQL Analyst?
+
+Answer:
+
+Sumner with 10085.90
+
+### My solution
+```sql
+SELECT first_name, position_title,
+MAX(salary)
+FROM employee
+WHERE position_title = 'SQL Analyst'
+GROUP BY first_name, position_title
+ORDER BY MAX(salary) DESC
+LIMIT 1
+```
+
+Task 11.2
+
+Add also the average salary per position_title.
+
+<img width="641" height="198" alt="image" src="https://github.com/user-attachments/assets/41499b17-5d90-41fc-a3c6-09059209756c" />
+
+```sql
+SELECT first_name, position_title,
+MAX(salary) salary,
+(SELECT ROUND(AVG(s.salary),2) avg_in_pos
+FROM employee s
+where s.position_title = f.position_title
+GROUP BY s.position_title)
+FROM employee f
+GROUP BY first_name, position_title
+ORDER BY MAX(salary) DESC
+```
+
+
+
