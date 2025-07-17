@@ -266,35 +266,164 @@ Difficulty: Advanced
 
 Write a query that adds a column called manager that contains  first_name and last_name (in one column) in the data output.
 
-### My solution
-```sql
-ALTER TABLE employee
-ADD manager text;
-
-UPDATE employee
-SET manager = first_name || ' ' || last_name
-WHERE first_name = first_name AND last_name = last_name;
-
-
-```
-
 Secondly, add a column called is_active with 'false' if the employee has left the company already, otherwise the value is 'true'.
 
 ### My solution
 ```sql
-ALTER TABLE employee
-ADD is_active BOOL;
-
-Update employee
-SET is_active = TRUE
-WHERE end_date IS NULL;
-
-Update employee
-SET is_active = FALSE
-WHERE end_date IS NOT NULL;
+SELECT
+*,
+first_name || ' ' || last_name as manager,
+CASE 
+    WHEN end_date IS NULL THEN 'true'
+	ELSE 'false'
+END as is_active
+FROM employee;
 ```
 
 ### Task 5.2
 
 Create a view called v_employees_info from that previous query.
+```sql
+CREATE VIEW v_employees_info as
+SELECT
+*,
+first_name || ' ' || last_name as manager,
+CASE 
+    WHEN end_date IS NULL THEN 'true'
+	ELSE 'false'
+END as is_active
+FROM employee;
+```
+
+## Task 6
+
+Difficulty: Moderate
+
+Write a query that returns the average salaries for each positions with appropriate roundings.
+
+
+### My solution
+```sql
+SELECT position_title as position,
+ROUND(AVG(salary), 2) as average_salary
+FROM employee
+GROUP BY position_title;
+```
+
+Question:
+
+What is the average salary for a Software Engineer in the company.
+
+
+Answer:
+
+6028.00
+
+### My solution
+```sql
+SELECT position_title as position,
+ROUND(AVG(salary), 2) as average_salary
+FROM employee
+WHERE position_title = 'Software Engineer'
+GROUP BY position_title;
+```
+
+## Task 7
+
+Difficulty: Moderate
+
+
+Write a query that returns the average salaries per division.
+
+```sql
+SELECT d.division,
+ROUND(AVG(e.salary),2) as average_salary
+from employee e
+FULL OUTER JOIN departments d
+ON d.department_id = e.department_id
+GROUP BY d.division;
+```
+
+Question:
+
+What is the average salary in the Sales department?
+
+Answer:
+
+6107.41
+
+```sql
+SELECT d.department,
+ROUND(AVG(e.salary),2)
+FROM employee e
+FULL OUTER JOIN departments d
+ON d.department_id = e.department_id
+WHERE d.department = 'Sales'
+GROUP BY d.department, d.division;
+```
+
+Task 8
+
+Difficulty: Advanced
+
+
+
+Task 8.1
+
+Write a query that returns the following:
+
+emp_id,
+
+first_name,
+
+last_name,
+
+position_title,
+
+salary
+
+and a column that returns the average salary for every position_title.
+
+
+Order the results by the emp_id.
+
+<img width="1014" height="243" alt="image" src="https://github.com/user-attachments/assets/58c3861a-f633-45e7-92a8-5a522883475e" />
+
+### My solution
+```sql
+SELECT emp_id,
+first_name,
+last_name,
+position_title,
+salary,
+(SELECT 
+      ROUND(AVG(salary),2) avg_position_salary
+      FROM employee s
+      WHERE s.salary = f.salary
+      GROUP BY position_title)
+FROM employee f
+ORDER BY emp_id;
+```
+
+
+
+
+Task 8.2
+
+Difficulty: Advanced to Pro
+
+
+
+How many people earn less than there avg_position_salary?
+
+Write a query that answers that question.
+
+Ideally, the output just shows that number directly.
+
+
+
+Answer:
+
+9
+
 
