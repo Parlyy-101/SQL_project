@@ -561,7 +561,7 @@ ORDER BY MAX(salary) DESC
 LIMIT 1
 ```
 
-Task 11.2
+### Task 11.2
 
 Add also the average salary per position_title.
 
@@ -578,6 +578,25 @@ FROM employee f
 GROUP BY first_name, position_title
 ORDER BY MAX(salary) DESC
 ```
+### Task 11.3
+
+Remove those employees from the output of the previous query that has the same salary as the average of their position_title.
+
+These are the people that are the only ones with their position_title.
+```sql
+SELECT * 
+FROM (SELECT first_name, position_title,
+MAX(salary) salary,
+(SELECT ROUND(AVG(s.salary),2) avg_in_pos
+FROM employee s
+where s.position_title = f.position_title
+GROUP BY s.position_title)
+FROM employee f
+GROUP BY first_name, position_title
+ORDER BY MAX(salary) DESC)
+WHERE salary != avg_in_pos
+```
+
 
 
 
