@@ -692,3 +692,50 @@ ON d.department_id = e.department_id)
 WHERE department ='Analytics' AND rank = 7;
 ```
 
+## Task 14
+
+Difficulty: Pro
+
+Write a query that returns only the top earner of each department including
+
+their emp_id, position_title, department, and their salary.
+
+```sql
+SELECT emp_id,
+position_title,
+department,
+salary
+FROM
+(SELECT e.emp_id,
+e.position_title,
+d.department,
+salary,
+RANK() OVER (PARTITION BY d.department ORDER BY salary DESC) rank
+FROM departments d
+FULL OUTER JOIN employee e
+ON d.department_id = e.department_id)
+WHERE rank = 1;
+```
+
+Question:
+
+Which employee (emp_id) is the top earner in the department Finance?
+
+
+Answer:
+
+emp_id 8
+
+```sql
+SELECT emp_id
+FROM
+(SELECT e.emp_id,
+e.position_title,
+d.department,
+salary,
+RANK() OVER (PARTITION BY d.department ORDER BY salary DESC) rank
+FROM departments d
+FULL OUTER JOIN employee e
+ON d.department_id = e.department_id)
+WHERE rank = 1 AND department = 'Finance';
+```
