@@ -598,5 +598,97 @@ WHERE salary != avg_in_pos
 ```
 
 
+## Task 12
 
+
+
+Difficulty: Pro
+
+
+
+Write a query that returns all meaningful aggregations of
+
+- sum of salary,
+
+- number of employees,
+
+- average salary
+
+grouped by all meaningful combinations of
+
+- division,
+
+- department,
+
+- position_title.
+
+
+
+Consider the levels of hierarchies in a meaningful way.
+
+<img width="907" height="244" alt="image" src="https://github.com/user-attachments/assets/28728d1c-04d5-46be-88da-0fb5eb00bb90" />
+
+
+### My solution
+```sql
+SELECT d.division,
+d.department,
+e.position_title,
+SUM(e.salary),
+COUNT(*),
+ROUND(AVG(e.salary),2)
+FROM departments d
+FULL OUTER JOIN employee e
+ON d.department_id = e.department_id
+GROUP BY GROUPING SETS ((division, department, position_title),
+                         (division, department))
+ORDER BY d.division ASC, d.department ASC, position_title ASC;
+```
+
+## Task 13
+
+Difficulty: Advanced to Pro
+
+
+Write a query that returns all employees (emp_id) including their position_title, department, their salary, and the rank of that salary partitioned by department.
+
+The highest salary per division should have rank 1.
+
+<img width="731" height="242" alt="image" src="https://github.com/user-attachments/assets/e3135f6c-c397-4a8c-a46a-89b16e9a1582" />
+
+
+### My solution
+```sql
+SELECT e.emp_id,
+e.position_title,
+d.department,
+salary,
+RANK() OVER (PARTITION BY d.department ORDER BY salary DESC)
+FROM departments d
+FULL OUTER JOIN employee e
+ON d.department_id = e.department_id;
+
+```
+
+Question:
+
+Which employee (emp_id) is in rank 7 in the department Analytics?
+
+Answer:
+
+emp_id 26
+
+### My solution
+```sql
+SELECT emp_id FROM 
+(SELECT e.emp_id,
+e.position_title,
+d.department,
+salary,
+RANK() OVER (PARTITION BY d.department ORDER BY salary DESC) rank
+FROM departments d
+FULL OUTER JOIN employee e
+ON d.department_id = e.department_id)
+WHERE department ='Analytics' AND rank = 7;
+```
 
