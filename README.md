@@ -1,4 +1,7 @@
 # SQL_project
+
+This SQL project is part of the Udemy certification couse titled "[15 Days of SQL: The Complete SQL Masterclass 2025](https://www.udemy.com/course/15-days-of-sql)" Nikolai Schuler. It contains all the questions, solutions and the queries that I used to answer them.
+
 ## Task 1
 Difficulty: Moderate
 
@@ -211,8 +214,6 @@ SET salary = 7200, position_title = 'Senior SQL Analyst'
 WHERE first_name = 'Jack' AND last_name = 'Franklin'
 ```
 
-
-
 ### Task 4.2
 
 The responsible people decided to rename the position_title Customer Support to Customer Specialist.
@@ -225,7 +226,8 @@ UPDATE employee
 SET position_title = 'Customer Specialist'
 WHERE position_title = 'Customer Support'
 ```
-Task 4.3
+
+### Task 4.3
 
 All SQL Analysts including Senior SQL Analysts get a raise of 6%.
 
@@ -238,7 +240,7 @@ SET salary = (salary + (6*100)/salary)
 WHERE position_title = 'SQL Analyst'
 ```
 
-Task 4.4
+### Task 4.4
 
 Question:
 
@@ -261,7 +263,6 @@ WHERE position_title = 'SQL Analyst'
 
 Difficulty: Advanced
 
-
 ### Task 5.1
 
 Write a query that adds a column called manager that contains  first_name and last_name (in one column) in the data output.
@@ -283,6 +284,8 @@ FROM employee;
 ### Task 5.2
 
 Create a view called v_employees_info from that previous query.
+
+### My solution
 ```sql
 CREATE VIEW v_employees_info as
 SELECT
@@ -295,12 +298,12 @@ END as is_active
 FROM employee;
 ```
 
+
 ## Task 6
 
 Difficulty: Moderate
 
 Write a query that returns the average salaries for each positions with appropriate roundings.
-
 
 ### My solution
 ```sql
@@ -328,13 +331,14 @@ WHERE position_title = 'Software Engineer'
 GROUP BY position_title;
 ```
 
+
 ## Task 7
 
 Difficulty: Moderate
 
-
 Write a query that returns the average salaries per division.
 
+### My solution
 ```sql
 SELECT d.division,
 ROUND(AVG(e.salary),2) as average_salary
@@ -352,6 +356,8 @@ Answer:
 
 6107.41
 
+### My solution
+
 ```sql
 SELECT d.department,
 ROUND(AVG(e.salary),2)
@@ -362,11 +368,10 @@ WHERE d.department = 'Sales'
 GROUP BY d.department, d.division;
 ```
 
+
 ## Task 8
 
 Difficulty: Advanced
-
-
 
 ### Task 8.1
 
@@ -383,7 +388,6 @@ position_title,
 salary
 
 and a column that returns the average salary for every position_title.
-
 
 Order the results by the emp_id.
 
@@ -405,14 +409,9 @@ FROM employee f
 ORDER BY emp_id;
 ```
 
-
-
-
 ### Task 8.2
 
 Difficulty: Advanced to Pro
-
-
 
 How many people earn less than there avg_position_salary?
 
@@ -420,11 +419,11 @@ Write a query that answers that question.
 
 Ideally, the output just shows that number directly.
 
-
-
 Answer:
 
 9
+
+### My solution
 
 ```sql
 SELECT COUNT(*)
@@ -468,6 +467,7 @@ What was the total salary after 2018-12-31?
 Answer:
 
 180202.70
+
 ### My solution
 ```sql
 SELECT lead
@@ -483,31 +483,16 @@ FROM employee))
 WHERE start_date = '2018-12-31'
 ```
 
+
 ## Task 10:
 
 Difficulty: Pro / Very difficult
 
 Create the same running total but now also consider the fact that people were leaving the company.
 
-
-
-Note:
-
-This challenge is actually very difficult.
-
-Don't worry if you can't solve it you are not expected to do so.
-
-It is possible to solve the challenge even without the hints.
-
-If you want you can try to solve it using the hints and it is still a difficult challenge.
-
-
-
 Question:
 
 What was the total salary after 2018-12-31?
-
-
 
 Answer:
 
@@ -534,13 +519,14 @@ WHERE start_date = '2018-12-31'
 Write a query that outputs only the top earner per position_title including first_name and position_title and their salary.
 
 
+### My solution
+
 ```sql
 SELECT first_name, position_title,
 MAX(salary)
 FROM employee
 GROUP BY first_name, position_title;
 ```
-
 
 Question:
 
@@ -600,11 +586,7 @@ WHERE salary != avg_in_pos
 
 ## Task 12
 
-
-
 Difficulty: Pro
-
-
 
 Write a query that returns all meaningful aggregations of
 
@@ -622,12 +604,9 @@ grouped by all meaningful combinations of
 
 - position_title.
 
-
-
 Consider the levels of hierarchies in a meaningful way.
 
 <img width="907" height="244" alt="image" src="https://github.com/user-attachments/assets/28728d1c-04d5-46be-88da-0fb5eb00bb90" />
-
 
 ### My solution
 ```sql
@@ -645,17 +624,16 @@ GROUP BY GROUPING SETS ((division, department, position_title),
 ORDER BY d.division ASC, d.department ASC, position_title ASC;
 ```
 
+
 ## Task 13
 
 Difficulty: Advanced to Pro
-
 
 Write a query that returns all employees (emp_id) including their position_title, department, their salary, and the rank of that salary partitioned by department.
 
 The highest salary per division should have rank 1.
 
 <img width="731" height="242" alt="image" src="https://github.com/user-attachments/assets/e3135f6c-c397-4a8c-a46a-89b16e9a1582" />
-
 
 ### My solution
 ```sql
@@ -667,7 +645,6 @@ RANK() OVER (PARTITION BY d.department ORDER BY salary DESC)
 FROM departments d
 FULL OUTER JOIN employee e
 ON d.department_id = e.department_id;
-
 ```
 
 Question:
@@ -692,6 +669,7 @@ ON d.department_id = e.department_id)
 WHERE department ='Analytics' AND rank = 7;
 ```
 
+
 ## Task 14
 
 Difficulty: Pro
@@ -699,6 +677,8 @@ Difficulty: Pro
 Write a query that returns only the top earner of each department including
 
 their emp_id, position_title, department, and their salary.
+
+### My solution
 
 ```sql
 SELECT emp_id,
@@ -721,10 +701,11 @@ Question:
 
 Which employee (emp_id) is the top earner in the department Finance?
 
-
 Answer:
 
 emp_id 8
+
+### My solution
 
 ```sql
 SELECT emp_id
